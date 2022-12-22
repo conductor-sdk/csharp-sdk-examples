@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <RepositoryUrl>https://github.com/conductor-sdk/csharp-sdk-examples</RepositoryUrl>
+        <Description>C# SDK examples for Conductor</Description>
+        <OutputType>Exe</OutputType>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+        <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0" />
+        <PackageReference Include="conductor-csharp" Version="0.1.6" />
+        <None Include="/README.md" Pack="true" PackagePath="/" />
+    </ItemGroup>
+</Project>
