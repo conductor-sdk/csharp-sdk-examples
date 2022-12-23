@@ -11,9 +11,9 @@ jobs:
       - name: Linter
         run: >
           DOCKER_BUILDKIT=1 docker build
-            --progress=plain
-            --target=lint
-            .
+          --progress=plain
+          --target=lint
+          .
   test:
     runs-on: ubuntu-latest
     steps:
@@ -22,9 +22,9 @@ jobs:
       - name: Test
         run: >
           DOCKER_BUILDKIT=1 docker build
-            --target=test
-            --progress=plain
-            --build-arg KEY=${{ secrets.SDK_KEY }}
-            --build-arg SECRET=${{ secrets.SDK_SECRET }}
-            --build-arg CONDUCTOR_SERVER_URL=${{ secrets.CONDUCTOR_SERVER_URL }}
-            .
+          --target=test
+          --progress=plain
+          --build-arg KEY=${{ secrets.SDK_KEY }}
+          --build-arg SECRET=${{ secrets.SDK_SECRET }}
+          --build-arg CONDUCTOR_SERVER_URL=${{ secrets.CONDUCTOR_SERVER_URL }}
+          .
