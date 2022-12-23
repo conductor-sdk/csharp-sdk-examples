@@ -10,7 +10,7 @@ jobs:
         uses: actions/checkout@v3
       - name: Linter
         run: >
-          DOCKER_BUILDKIT=1 docker build .
+          docker build .
             --progress=plain
             --target=lint
   test:
@@ -20,7 +20,7 @@ jobs:
         uses: actions/checkout@v3
       - name: Test
         run: >
-          DOCKER_BUILDKIT=1 docker build .            
+          docker build .            
             --build-arg KEY=${{ secrets.SDK_INTEGRATION_TESTS_SERVER_KEY_ID }}
             --build-arg SECRET=${{ secrets.SDK_INTEGRATION_TESTS_SERVER_KEY_SECRET }}
             --build-arg CONDUCTOR_SERVER_URL=${{ secrets.SDK_INTEGRATION_TESTS_SERVER_API_URL }}
