@@ -49,6 +49,7 @@ namespace Examples.Api
         private static string GetEnvironmentVariable(string variable)
         {
             string value = Environment.GetEnvironmentVariable(variable);
+            Console.WriteLine($"ENV {variable}: {value}");
             Debug.Assert(value != null);
             return value;
         }
