@@ -6,7 +6,7 @@ WORKDIR /package
 FROM csharp AS lint
 RUN dotnet format --verify-no-changes *.csproj
 
-FROM csharp AS run
+FROM csharp AS test
 ARG KEY
 ARG SECRET
 ARG CONDUCTOR_SERVER_URL
