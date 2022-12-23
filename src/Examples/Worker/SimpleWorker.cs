@@ -1,6 +1,6 @@
-using Conductor.Client.Models;
-using Conductor.Client.Interfaces;
 using Conductor.Client.Extensions;
+using Conductor.Client.Interfaces;
+using Conductor.Client.Models;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -11,7 +11,7 @@ namespace Examples.Worker
         public string TaskType { get; }
         public int? Priority { get; }
 
-        public SimpleWorker(string taskType = "csharp-sdk-example-task")
+        public SimpleWorker(string taskType = Examples.Workflow.WorkflowUtil.TASK_NAME)
         {
             TaskType = taskType;
         }

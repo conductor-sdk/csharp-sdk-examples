@@ -1,7 +1,7 @@
 using Conductor.Client.Interfaces;
 using Microsoft.Extensions.Hosting;
-using System.Threading;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace Examples.Worker
 {

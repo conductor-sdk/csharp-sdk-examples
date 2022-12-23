@@ -1,7 +1,6 @@
+using Conductor.Client.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Conductor.Client.Extensions;
-using Examples.Api;
 
 namespace Examples.Worker
 {
@@ -13,7 +12,7 @@ namespace Examples.Worker
                 .ConfigureServices(
                     (ctx, services) =>
                         {
-                            services.AddConductorWorker(ApiUtil.GetConfiguration());
+                            services.AddConductorWorker(Examples.Api.ApiUtil.GetConfiguration());
                             services.AddConductorWorkflowTask<SimpleWorker>();
                             services.WithHostedService<WorkerService>();
                         }
@@ -24,6 +23,12 @@ namespace Examples.Worker
                             logging.AddConsole();
                         }
                 ).Build();
+        }
+
+        public static void StartWorkers()
+        {
+            IHost host = WorkerUtil.GetWorkerHost();
+            host.RunAsync();
         }
     }
 }
