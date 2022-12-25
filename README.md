@@ -56,7 +56,7 @@ ConductorWorkflow CreateWorkflow()
 
 
 ## Worker
-Workers are implemented as simple a simple interface implementation. See [SimpleWorker.java](src/Examples/Worker/SimpleWorker.cs) for details.
+Workers are implemented as simple interface implementation. See [SimpleWorker.cs](src/Examples/Worker/SimpleWorker.cs) for details.
 
 ## Executing Workflows
 
