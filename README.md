@@ -35,7 +35,7 @@ We create a simple 2-step workflow that fetches the user details and sends an em
 
 <table><tr><th>Visual</th><th>Code</th></tr>
 <tr>
-<td width="50%"><img src="src/main/resources/workflow.png" width="250px"></td>
+<td width="50%"><img src="workflow.png" width="250px"></td>
 <td>
 <pre> 
 ConductorWorkflow CreateWorkflow()
@@ -62,7 +62,7 @@ Workers are implemented as simple interface implementation. See [SimpleWorker.cs
 
 ### Asynchronous Workflow Execution
 ```csharp
-WorkflowClient#startWorkflow(...)
+WorkflowExecutor#startWorkflow(...)
 ```
 
 See [Main.cs](src/Examples/Main.cs) for complete code sample of workflow execution.
