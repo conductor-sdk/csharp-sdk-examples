@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace Examples.Worker
 {
-    public class SimpleWorker : IWorkflowTask
+    public class UserTransactions : IWorkflowTask
     {
         public string TaskType { get; }
         public int? Priority { get; }
 
-        public SimpleWorker(string taskType = Examples.Workflow.WorkflowUtil.TASK_NAME)
+        public UserTransactions(string taskType = "get_user_transactions")
         {
             TaskType = taskType;
         }

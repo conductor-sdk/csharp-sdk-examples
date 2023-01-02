@@ -13,7 +13,7 @@ namespace Examples.Worker
                     (ctx, services) =>
                         {
                             services.AddConductorWorker(Examples.Api.ApiUtil.GetConfiguration());
-                            services.AddConductorWorkflowTask<SimpleWorker>();
+                            services.AddConductorWorkflowTask<UserTransactions>();
                             services.WithHostedService<WorkerService>();
                         }
                 ).ConfigureLogging(
