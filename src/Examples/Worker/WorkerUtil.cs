@@ -6,7 +6,13 @@ namespace Examples.Worker
 {
     public class WorkerUtil
     {
-        public static IHost GetWorkerHost()
+        public static void StartWorkers()
+        {
+            IHost host = GetWorkerHost();
+            host.RunAsync();
+        }
+
+        private static IHost GetWorkerHost()
         {
             return new HostBuilder()
                 .ConfigureServices(
@@ -23,12 +29,6 @@ namespace Examples.Worker
                             logging.AddConsole();
                         }
                 ).Build();
-        }
-
-        public static void StartWorkers()
-        {
-            IHost host = WorkerUtil.GetWorkerHost();
-            host.RunAsync();
         }
     }
 }
