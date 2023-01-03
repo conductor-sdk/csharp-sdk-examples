@@ -19,7 +19,9 @@ namespace Examples.Worker
                     (ctx, services) =>
                         {
                             services.AddConductorWorker(Examples.Api.ApiUtil.GetConfiguration());
-                            services.AddConductorWorkflowTask<SimpleWorker>();
+                            services.AddConductorWorkflowTask<GetUserInfo>();
+                            services.AddConductorWorkflowTask<SendEmail>();
+                            services.AddConductorWorkflowTask<SendSms>();
                             services.WithHostedService<WorkerService>();
                         }
                 ).ConfigureLogging(
