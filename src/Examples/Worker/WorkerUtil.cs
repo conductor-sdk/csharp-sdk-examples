@@ -18,7 +18,9 @@ namespace Examples.Worker
                 .ConfigureServices(
                     (ctx, services) =>
                         {
-                            services.AddConductorWorker(Examples.Api.ApiUtil.GetConfiguration());
+                            services.AddConductorWorker(
+                                configuration: Examples.Api.ApiUtil.GetConfiguration()
+                            );
                             services.AddConductorWorkflowTask<GetUserInfo>();
                             services.AddConductorWorkflowTask<SendEmail>();
                             services.AddConductorWorkflowTask<SendSms>();
@@ -27,7 +29,7 @@ namespace Examples.Worker
                 ).ConfigureLogging(
                     logging =>
                         {
-                            logging.SetMinimumLevel(LogLevel.Debug);
+                            logging.SetMinimumLevel(LogLevel.Warning);
                             logging.AddConsole();
                         }
                 ).Build();

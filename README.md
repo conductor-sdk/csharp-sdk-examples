@@ -56,13 +56,24 @@ ConductorWorkflow CreateWorkflow()
 
 
 ## Worker
-Workers are implemented as simple interface implementation. See [SimpleWorker.cs](src/Examples/Worker/SimpleWorker.cs) for details.
+Workers are a simple interface implementation. See [GetUserInfo.cs](src/Examples/Worker/GetUserInfo.cs) for more details.
 
 ## Executing Workflows
 
-### Asynchronous Workflow Execution
+There are two ways to execute a workflow:
+1. Synchronously - useful for short duration workflows that completes within a few second.  
+2. Asynchronously - workflows that runs for longer period
+
+### Synchronous Workflow Execution
+
 ```csharp
-WorkflowExecutor#startWorkflow(...)
+WorkflowResourceApi#ExecuteWorkflow(...)
+```
+
+### Asynchronous Workflow Execution
+
+```csharp
+WorkflowResourceApi#StartWorkflow(...)
 ```
 
 See [Main.cs](src/Examples/Main.cs) for complete code sample of workflow execution.
