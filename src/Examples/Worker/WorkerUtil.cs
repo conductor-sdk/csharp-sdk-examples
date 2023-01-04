@@ -6,14 +6,22 @@ namespace Examples.Worker
 {
     public class WorkerUtil
     {
-        public static IHost GetWorkerHost()
+        public static void StartWorkers()
+        {
+            IHost host = GetWorkerHost();
+            host.RunAsync();
+        }
+
+        private static IHost GetWorkerHost()
         {
             return new HostBuilder()
                 .ConfigureServices(
                     (ctx, services) =>
                         {
                             services.AddConductorWorker(Examples.Api.ApiUtil.GetConfiguration());
-                            services.AddConductorWorkflowTask<SimpleWorker>();
+                            services.AddConductorWorkflowTask<GetUserInfo>();
+                            services.AddConductorWorkflowTask<SendEmail>();
+                            services.AddConductorWorkflowTask<SendSms>();
                             services.WithHostedService<WorkerService>();
                         }
                 ).ConfigureLogging(
@@ -23,12 +31,6 @@ namespace Examples.Worker
                             logging.AddConsole();
                         }
                 ).Build();
-        }
-
-        public static void StartWorkers()
-        {
-            IHost host = WorkerUtil.GetWorkerHost();
-            host.RunAsync();
         }
     }
 }

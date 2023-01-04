@@ -46,6 +46,12 @@ namespace Examples.Api
             return configuration;
         }
 
+        public static string GetWorkflowExecutionURL(string workflowId)
+        {
+            string prefix = _basePath.Remove(_basePath.Length - 4);
+            return $"{prefix}/execution/{workflowId}";
+        }
+
         private static string GetEnvironmentVariable(string variable)
         {
             string value = Environment.GetEnvironmentVariable(variable);
