@@ -14,18 +14,18 @@ namespace Examples.Worker
 
         public async Task<TaskResult> Execute(Conductor.Client.Models.Task task, CancellationToken token)
         {
-            string userId = (string)task.InputData["userId"];
-            UserInfo userInfo = new UserInfo("User X", userId);
-            userInfo.Email = $"{userId}@example.com";
-            userInfo.PhoneNumber = "555-555-5555";
             TaskResult result = task.Completed(
-                outputData: GetOutputDataFromUserInfo(userInfo)
+                outputData: CreateOutputDataFromTask(task)
             );
             return await System.Threading.Tasks.Task.FromResult(result);
         }
 
-        private Dictionary<string, object> GetOutputDataFromUserInfo(UserInfo userInfo)
+        private Dictionary<string, object> CreateOutputDataFromTask(Conductor.Client.Models.Task task)
         {
+            string userId = (string)task.InputData["userId"];
+            UserInfo userInfo = new UserInfo("User X", userId);
+            userInfo.Email = $"{userId}@example.com";
+            userInfo.PhoneNumber = "555-555-5555";
             return new Dictionary<string, object>()
             {
                 {"name", userInfo.Name},
