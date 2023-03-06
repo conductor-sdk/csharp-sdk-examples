@@ -43,7 +43,6 @@ namespace Examples.Api
             configuration.keyId = _keyId;
             configuration.keySecret = _keySecret;
             configuration.BasePath = _basePath;
-            configuration.SleepInterval = 50;
             return configuration;
         }
 

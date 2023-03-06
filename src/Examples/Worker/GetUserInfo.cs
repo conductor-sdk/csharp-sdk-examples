@@ -1,16 +1,17 @@
 using Conductor.Client.Extensions;
 using Conductor.Client.Interfaces;
 using Conductor.Client.Models;
+using Conductor.Client.Worker;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Collections.Generic;
 
 namespace Examples.Worker
 {
     public class GetUserInfo : IWorkflowTask
     {
         public string TaskType { get; } = "get_user_info";
-        public int? Priority { get; }
+        public WorkflowTaskExecutorConfiguration WorkerSettings { get; } = new WorkflowTaskExecutorConfiguration();
 
         public async Task<TaskResult> Execute(Conductor.Client.Models.Task task, CancellationToken token)
         {
