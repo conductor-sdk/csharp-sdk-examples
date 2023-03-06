@@ -1,6 +1,7 @@
 using Conductor.Client.Extensions;
 using Conductor.Client.Interfaces;
 using Conductor.Client.Models;
+using Conductor.Client.Worker;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -11,7 +12,7 @@ namespace Examples.Worker
     public class SendSms : IWorkflowTask
     {
         public string TaskType { get; } = "send_sms";
-        public int? Priority { get; }
+        public WorkflowTaskExecutorConfiguration WorkerSettings { get; } = new WorkflowTaskExecutorConfiguration();
 
         public async Task<TaskResult> Execute(Conductor.Client.Models.Task task, CancellationToken token)
         {
