@@ -13,10 +13,10 @@ StartWorkflowAsync(workflow);
 
 static void StartWorkflowSync(ConductorWorkflow workflow)
 {
-    StartWorkflowRequest startWorkflowRequest = Examples.Workflow.WorkflowCreator.GetStartWorkflowRequest(workflow);
+    var workflowClient = Examples.Api.ApiUtil.GetClient<WorkflowResourceApi>();
+    var startWorkflowRequest = Examples.Workflow.WorkflowCreator.GetStartWorkflowRequest(workflow);
 
-    WorkflowResourceApi workflowClient = Examples.Api.ApiUtil.GetClient<WorkflowResourceApi>();
-    WorkflowRun workflowRun = workflowClient.ExecuteWorkflow(
+    var workflowRun = workflowClient.ExecuteWorkflow(
         body: startWorkflowRequest,
         requestId: Guid.NewGuid().ToString(),
         name: workflow.Name,
@@ -35,10 +35,10 @@ static void StartWorkflowSync(ConductorWorkflow workflow)
 
 static void StartWorkflowAsync(ConductorWorkflow workflow)
 {
-    StartWorkflowRequest startWorkflowRequest = Examples.Workflow.WorkflowCreator.GetStartWorkflowRequest(workflow);
+    var workflowClient = Examples.Api.ApiUtil.GetClient<WorkflowResourceApi>();
 
-    WorkflowResourceApi workflowClient = Examples.Api.ApiUtil.GetClient<WorkflowResourceApi>();
-    string workflowId = workflowClient.StartWorkflow(startWorkflowRequest);
+    var startWorkflowRequest = Examples.Workflow.WorkflowCreator.GetStartWorkflowRequest(workflow);
+    var workflowId = workflowClient.StartWorkflow(startWorkflowRequest);
 
     Thread.Sleep(7 * 1000);
 
