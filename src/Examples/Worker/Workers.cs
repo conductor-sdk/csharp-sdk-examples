@@ -28,7 +28,7 @@ namespace Examples.Worker
 
     public class SendEmail : AbstractWorker
     {
-        public SendEmail() : base("send_sms") { }
+        public SendEmail() : base("send_email") { }
 
         override
         public TaskResult Execute(Task task)

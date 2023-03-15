@@ -29,7 +29,7 @@ namespace Examples.Worker
                 ).ConfigureLogging(
                     logging =>
                         {
-                            logging.SetMinimumLevel(LogLevel.Warning);
+                            logging.SetMinimumLevel(LogLevel.Debug);
                             logging.AddConsole();
                         }
                 ).Build();

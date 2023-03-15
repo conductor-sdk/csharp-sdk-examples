@@ -45,7 +45,7 @@ namespace Examples.Api
             Configuration configuration = new Configuration();
             configuration.BasePath = _basePath;
             configuration.AuthenticationSettings = new OrkesAuthenticationSettings(_keyId, _keySecret);
-            configuration.Timeout = 10000;
+            configuration.Timeout = 15000;
             return configuration;
         }
 
