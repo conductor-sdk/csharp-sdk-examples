@@ -43,9 +43,9 @@ namespace Examples.Api
         public static Configuration GetConfiguration()
         {
             Configuration configuration = new Configuration();
+            configuration.Timeout = 20000;
             configuration.BasePath = _basePath;
             configuration.AuthenticationSettings = new OrkesAuthenticationSettings(_keyId, _keySecret);
-            configuration.Timeout = 15000;
             return configuration;
         }
 
