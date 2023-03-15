@@ -1,5 +1,6 @@
 using Conductor.Api;
 using Conductor.Client;
+using Conductor.Client.Authentication;
 using Conductor.Executor;
 using System;
 using System.Diagnostics;
@@ -16,11 +17,14 @@ namespace Examples.Api
         private static string _keyId = null;
         private static string _keySecret = null;
 
+        private static Configuration _configuration = null;
+
         static ApiUtil()
         {
             _keyId = GetEnvironmentVariable(KEY);
             _keySecret = GetEnvironmentVariable(SECRET);
             _basePath = GetEnvironmentVariable(CONDUCTOR_SERVER_URL);
+            _configuration = GetConfiguration();
         }
 
         public static WorkflowExecutor GetWorkflowExecutor()
@@ -33,16 +37,15 @@ namespace Examples.Api
 
         public static T GetClient<T>() where T : IApiAccessor, new()
         {
-            OrkesApiClient apiClient = new OrkesApiClient(GetConfiguration());
-            return apiClient.GetClient<T>();
+            return _configuration.GetClient<T>();
         }
 
         public static Configuration GetConfiguration()
         {
             Configuration configuration = new Configuration();
-            configuration.keyId = _keyId;
-            configuration.keySecret = _keySecret;
             configuration.BasePath = _basePath;
+            configuration.AuthenticationSettings = new OrkesAuthenticationSettings(_keyId, _keySecret);
+            configuration.Timeout = 10000;
             return configuration;
         }
 
