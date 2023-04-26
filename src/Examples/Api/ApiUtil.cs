@@ -42,7 +42,7 @@ namespace Examples.Api
 
         public static Configuration GetConfiguration()
         {
-            Configuration configuration = new Configuration();
+            var configuration = new Configuration();
             configuration.Timeout = 20000;
             configuration.BasePath = _basePath;
             configuration.AuthenticationSettings = new OrkesAuthenticationSettings(_keyId, _keySecret);
@@ -51,14 +51,13 @@ namespace Examples.Api
 
         public static string GetWorkflowExecutionURL(string workflowId)
         {
-            string prefix = _basePath.Remove(_basePath.Length - 4);
+            var prefix = _basePath.Remove(_basePath.Length - 4);
             return $"{prefix}/execution/{workflowId}";
         }
 
         private static string GetEnvironmentVariable(string variable)
         {
-            string value = Environment.GetEnvironmentVariable(variable);
-            Console.WriteLine($"ENV {variable}: {value}");
+            var value = Environment.GetEnvironmentVariable(variable);
             Debug.Assert(value != null);
             return value;
         }

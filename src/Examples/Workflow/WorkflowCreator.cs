@@ -18,7 +18,7 @@ namespace Examples.Workflow
 
         public static ConductorWorkflow CreateAndRegisterWorkflow()
         {
-            ConductorWorkflow workflow = Examples.Workflow.WorkflowCreator.CreateComplexWorkflow();
+            var workflow = Examples.Workflow.WorkflowCreator.CreateComplexWorkflow();
             _metadataClient.RegisterTaskDef(GetTaskDefs(workflow));
             _metadataClient.Create(
                 body: workflow,
@@ -29,8 +29,8 @@ namespace Examples.Workflow
 
         public static Conductor.Client.Models.StartWorkflowRequest GetStartWorkflowRequest(ConductorWorkflow workflow)
         {
-            Examples.Workflow.WorkflowInput workflowInput = new Examples.Workflow.WorkflowInput("userA");
-            Conductor.Client.Models.StartWorkflowRequest startWorkflowRequest = workflow.GetStartWorkflowRequest();
+            var workflowInput = new Examples.Workflow.WorkflowInput("userA");
+            var startWorkflowRequest = workflow.GetStartWorkflowRequest();
             startWorkflowRequest.Input = new Dictionary<string, object>()
             {
                 {"userId", workflowInput.UserId},
@@ -42,7 +42,7 @@ namespace Examples.Workflow
 
         private static List<Conductor.Client.Models.TaskDef> GetTaskDefs(ConductorWorkflow workflow)
         {
-            List<Conductor.Client.Models.TaskDef> taskDefs = new List<Conductor.Client.Models.TaskDef>();
+            var taskDefs = new List<Conductor.Client.Models.TaskDef>();
             workflow.Tasks.ForEach(
                 (task) =>
                 {
@@ -63,44 +63,25 @@ namespace Examples.Workflow
 
         private static ConductorWorkflow CreateComplexWorkflow()
         {
+            var getUserInfoTask = new SimpleTask("get_user_info", "get_user_info")
+                    .WithInput("userId", "${workflow.input.userId}");
+            var emailOrSmsTask = new SwitchTask("emailorsms", "${workflow.input.notificationPref}")
+                    .WithDecisionCase(
+                        WorkflowInput.NotificationPreference.EMAIL.ToString(),
+                        new SimpleTask("send_email", "send_email")
+                                .WithInput("email", "${get_user_info.output.email}")
+                    )
+                    .WithDecisionCase(
+                        WorkflowInput.NotificationPreference.SMS.ToString(),
+                        new SimpleTask("send_sms", "send_sms")
+                                .WithInput("phoneNumber", "${get_user_info.output.phoneNumber}")
+                    );
             return new ConductorWorkflow()
                 .WithName("user_notification")
                 .WithVersion(1)
                 .WithInputParameter("userId")
                 .WithInputParameter("notificationPref")
-                .WithTask(
-                    CreateGetUserDetailsTask(),
-                    CreateEmailOrSMSTask()
-                );
-        }
-
-        private static Task CreateGetUserDetailsTask()
-        {
-            return new SimpleTask("get_user_info", "get_user_info")
-                    .WithInput("userId", "${workflow.input.userId}");
-        }
-
-        private static Task CreateEmailOrSMSTask()
-        {
-            return new SwitchTask("emailorsms", "${workflow.input.notificationPref}")
-                    .WithDecisionCase(
-                        WorkflowInput.NotificationPreference.EMAIL.ToString(), CreateSendEmailTask()
-                    )
-                    .WithDecisionCase(
-                        WorkflowInput.NotificationPreference.SMS.ToString(), CreateSendSMSTask()
-                    );
-        }
-
-        private static Task CreateSendEmailTask()
-        {
-            return new SimpleTask("send_email", "send_email")
-                    .WithInput("email", "${get_user_info.output.email}");
-        }
-
-        private static Task CreateSendSMSTask()
-        {
-            return new SimpleTask("send_sms", "send_sms")
-                    .WithInput("phoneNumber", "${get_user_info.output.phoneNumber}");
+                .WithTask(getUserInfoTask, emailOrSmsTask);
         }
     }
 }

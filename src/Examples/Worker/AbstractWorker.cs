@@ -2,6 +2,7 @@ using Conductor.Client.Extensions;
 using Conductor.Client.Interfaces;
 using Conductor.Client.Models;
 using Conductor.Client.Worker;
+using System.Collections.Generic;
 
 namespace Examples.Worker
 {
@@ -20,6 +21,16 @@ namespace Examples.Worker
         public virtual TaskResult Execute(Task task)
         {
             return task.Completed();
+        }
+
+        protected virtual Dictionary<string, object> GetDictionaryFromObject<T>(T obj)
+        {
+            var dict = new Dictionary<string, object>();
+            foreach (var prop in obj.GetType().GetProperties())
+            {
+                dict[prop.Name] = prop.GetValue(obj);
+            }
+            return dict;
         }
     }
 }

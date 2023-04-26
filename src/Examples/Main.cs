@@ -6,7 +6,7 @@ using System.Threading;
 
 Examples.Worker.WorkerUtil.StartWorkers();
 
-ConductorWorkflow workflow = Examples.Workflow.WorkflowCreator.CreateAndRegisterWorkflow();
+var workflow = Examples.Workflow.WorkflowCreator.CreateAndRegisterWorkflow();
 
 StartWorkflowSync(workflow);
 StartWorkflowAsync(workflow);
@@ -49,7 +49,7 @@ static void StartWorkflowAsync(ConductorWorkflow workflow)
     Console.WriteLine($"Workflow Execution Flow UI: {Examples.Api.ApiUtil.GetWorkflowExecutionURL(workflowId)}");
     Console.WriteLine("=======================================================================================");
 
-    Workflow receivedWorkflow = workflowClient.GetExecutionStatus(workflowId);
+    var receivedWorkflow = workflowClient.GetExecutionStatus(workflowId);
     if (receivedWorkflow.Status != Workflow.StatusEnum.COMPLETED)
     {
         throw new Exception($"workflow not completed, workflowId: {workflowId}");
