@@ -38,17 +38,25 @@ We create a simple 2-step workflow that fetches the user details and sends an em
 <td width="50%"><img src="workflow.png" width="250px"></td>
 <td>
 <pre> 
-ConductorWorkflow CreateWorkflow()
-{
-    return new ConductorWorkflow()
-        .WithName("email_send_workflow")
-        .WithVersion(1)
-        .WithTask(
-            new SimpleTask("get_user_info", "get_user_info")
-                .WithInput("userId", "${workflow.input.userId}"),
+var getUserInfoTask = new SimpleTask("get_user_info", "get_user_info")
+                    .WithInput("userId", "${workflow.input.userId}");
+var emailOrSmsTask = new SwitchTask("emailorsms", "${workflow.input.notificationPref}")
+        .WithDecisionCase(
+            WorkflowInput.NotificationPreference.EMAIL.ToString(),
             new SimpleTask("send_email", "send_email")
-                .WithInput("email", "${get_user_info.output.email}"));
-}
+                    .WithInput("email", "${get_user_info.output.email}")
+        )
+        .WithDecisionCase(
+            WorkflowInput.NotificationPreference.SMS.ToString(),
+            new SimpleTask("send_sms", "send_sms")
+                    .WithInput("phoneNumber", "${get_user_info.output.phoneNumber}")
+        );
+return new ConductorWorkflow()
+    .WithName("user_notification")
+    .WithVersion(1)
+    .WithInputParameter("userId")
+    .WithInputParameter("notificationPref")
+    .WithTask(getUserInfoTask, emailOrSmsTask);
 </pre>
 </td>
 </tr>
