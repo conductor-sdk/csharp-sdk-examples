@@ -64,7 +64,7 @@ return new ConductorWorkflow()
 
 
 ## Worker
-Workers are a simple interface implementation. See [GetUserInfo.cs](src/Examples/Worker/GetUserInfo.cs) for more details.
+Workers are a simple interface implementation. See [GetUserInfo.cs](Examples/Worker/GetUserInfo.cs) for more details.
 
 ## Executing Workflows
 
@@ -84,4 +84,4 @@ WorkflowResourceApi#ExecuteWorkflow(...)
 WorkflowResourceApi#StartWorkflow(...)
 ```
 
-See [Main.cs](src/Examples/Main.cs) for complete code sample of workflow execution.
+See [Main.cs](Examples/Main.cs) for complete code sample of workflow execution.

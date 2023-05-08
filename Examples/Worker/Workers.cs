@@ -1,16 +1,17 @@
 using Conductor.Client.Extensions;
 using Conductor.Client.Models;
+using Conductor.Client.Worker;
 using System;
 using System.Collections.Generic;
 
 namespace Examples.Worker
 {
-    public class SendSms : AbstractWorker
+    [WorkerTask]
+    public class NotificationWorker
     {
-        public SendSms() : base("send_sms") { }
 
-        override
-        public TaskResult Execute(Task task)
+        [WorkerTask("send_sms", 10, null, 100, "workerId")]
+        public TaskResult SendSmsWorker(Task task)
         {
             var phoneNumber = (string)task.InputData["phoneNumber"];
             var message = $"Sent sms to {phoneNumber}";
@@ -19,14 +20,9 @@ namespace Examples.Worker
             result.OutputData = new Dictionary<string, object>() { { "output_key", message } };
             return result;
         }
-    }
 
-    public class SendEmail : AbstractWorker
-    {
-        public SendEmail() : base("send_email") { }
-
-        override
-        public TaskResult Execute(Task task)
+        [WorkerTask("send_email", 10, null, 100, "workerId")]
+        public TaskResult SendEmailWorker(Task task)
         {
             var email = (string)task.InputData["email"];
             var message = $"Sent email to {email}";

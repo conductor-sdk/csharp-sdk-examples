@@ -1,6 +1,6 @@
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS csharp
 RUN mkdir /package
-COPY /src/Examples /package/
+COPY /Examples /package/
 WORKDIR /package
 
 FROM csharp AS lint

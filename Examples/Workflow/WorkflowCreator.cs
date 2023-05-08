@@ -1,4 +1,5 @@
 using Conductor.Api;
+using Conductor.Client.Extensions;
 using Conductor.Definition;
 using Conductor.Definition.TaskType;
 using System.Collections.Generic;
@@ -12,8 +13,8 @@ namespace Examples.Workflow
 
         static WorkflowCreator()
         {
-            _workflowClient = Examples.Api.ApiUtil.GetClient<WorkflowResourceApi>();
-            _metadataClient = Examples.Api.ApiUtil.GetClient<MetadataResourceApi>();
+            _workflowClient = ApiExtensions.GetClient<WorkflowResourceApi>();
+            _metadataClient = ApiExtensions.GetClient<MetadataResourceApi>();
         }
 
         public static ConductorWorkflow CreateAndRegisterWorkflow()
