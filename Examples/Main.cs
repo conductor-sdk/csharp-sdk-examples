@@ -1,19 +1,19 @@
 using Conductor.Api;
 using Conductor.Client.Models;
 using Conductor.Definition;
+using Conductor.Client.Extensions;
 using System;
 using System.Threading;
 
-Examples.Worker.WorkerUtil.StartWorkers();
-
-ConductorWorkflow workflow = Examples.Workflow.WorkflowCreator.CreateAndRegisterWorkflow();
-
-StartWorkflowSync(workflow);
-StartWorkflowAsync(workflow);
+var host = WorkflowTaskHost.CreateWorkerHost(
+    ApiExtensions.GetConfiguration(),
+    Microsoft.Extensions.Logging.LogLevel.Debug,
+    workers: new Examples.Worker.GetUserInfo()
+);
 
 static void StartWorkflowSync(ConductorWorkflow workflow)
 {
-    var workflowClient = Examples.Api.ApiUtil.GetClient<WorkflowResourceApi>();
+    var workflowClient = ApiExtensions.GetClient<WorkflowResourceApi>();
     var startWorkflowRequest = Examples.Workflow.WorkflowCreator.GetStartWorkflowRequest(workflow);
 
     var workflowRun = workflowClient.ExecuteWorkflow(
@@ -35,7 +35,7 @@ static void StartWorkflowSync(ConductorWorkflow workflow)
 
 static void StartWorkflowAsync(ConductorWorkflow workflow)
 {
-    var workflowClient = Examples.Api.ApiUtil.GetClient<WorkflowResourceApi>();
+    var workflowClient = ApiExtensions.GetClient<WorkflowResourceApi>();
 
     var startWorkflowRequest = Examples.Workflow.WorkflowCreator.GetStartWorkflowRequest(workflow);
     var workflowId = workflowClient.StartWorkflow(startWorkflowRequest);
@@ -49,9 +49,15 @@ static void StartWorkflowAsync(ConductorWorkflow workflow)
     Console.WriteLine($"Workflow Execution Flow UI: {Examples.Api.ApiUtil.GetWorkflowExecutionURL(workflowId)}");
     Console.WriteLine("=======================================================================================");
 
-    Workflow receivedWorkflow = workflowClient.GetExecutionStatus(workflowId);
+    var receivedWorkflow = workflowClient.GetExecutionStatus(workflowId);
     if (receivedWorkflow.Status != Workflow.StatusEnum.COMPLETED)
     {
         throw new Exception($"workflow not completed, workflowId: {workflowId}");
     }
 }
+
+var workflow = Examples.Workflow.WorkflowCreator.CreateAndRegisterWorkflow();
+await host.StartAsync();
+StartWorkflowSync(workflow);
+StartWorkflowAsync(workflow);
+await host.StopAsync();
