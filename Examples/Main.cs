@@ -5,12 +5,11 @@ using Conductor.Client.Extensions;
 using System;
 using System.Threading;
 
-var host = WorkflowTaskHost.CreateWorkerHost(ApiExtensions.GetConfiguration());
-
-// var host = WorkflowTaskHost.CreateWorkerHost(
-//     ApiExtensions.GetConfiguration(),
-//     workers: new Examples.Worker.GetUserInfo()
-// );
+var host = WorkflowTaskHost.CreateWorkerHost(
+    ApiExtensions.GetConfiguration(),
+    Microsoft.Extensions.Logging.LogLevel.Debug,
+    workers: new Examples.Worker.GetUserInfo()
+);
 
 static void StartWorkflowSync(ConductorWorkflow workflow)
 {
