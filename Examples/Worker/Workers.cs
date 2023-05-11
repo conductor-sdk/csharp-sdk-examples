@@ -1,55 +1,63 @@
 using Conductor.Client.Extensions;
 using Conductor.Client.Models;
 using Conductor.Client.Worker;
+using Examples.Models;
+using Examples.Service;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Examples.Worker
 {
     [WorkerTask]
-    public class NotificationWorker
+    public class Workers
     {
+        private static Random _random;
+        private static FraudCheckService _fraudCheckService;
 
-        [WorkerTask("send_sms", 10, null, 100, "workerId")]
-        public TaskResult SendSmsWorker(Task task)
+        static Workers()
         {
-            var phoneNumber = (string)task.InputData["phoneNumber"];
-            var message = $"Sent sms to {phoneNumber}";
-            Console.WriteLine(message);
+            _random = new Random();
+            _fraudCheckService = new FraudCheckService();
+        }
+
+        // docs-marker-start-1
+
+        // Note: Using this setting, up to 5 tasks will run in parallel, with tasks being polled every 200ms
+        [WorkerTask(taskType: "fraud-check", batchSize: 5, domain: null, pollIntervalMs: 200, workerId: "workerId")]
+        public TaskResult FraudWorker(Task task)
+        {
+            var depositDetail = (DepositDetail)task.InputData["depositDetail"];
+            var fraudCheckResult = _fraudCheckService.CheckForFraud(depositDetail);
             var result = task.Completed();
-            result.OutputData = new Dictionary<string, object>() { { "output_key", message } };
+            result.OutputData = Examples.Util.TypeUtil.GetDictionaryFromObject(fraudCheckResult);
             return result;
         }
 
-        [WorkerTask("send_email", 10, null, 100, "workerId")]
-        public TaskResult SendEmailWorker(Task task)
+        // docs-marker-end-1
+
+        // docs-marker-start-2
+        [WorkerTask(taskType: "retrieve-deposit-batch", batchSize: 5, domain: null, pollIntervalMs: 200, workerId: "workerId")]
+        public TaskResult RetrieveDepositBatch(Task task)
         {
-            var email = (string)task.InputData["email"];
-            var message = $"Sent email to {email}";
-            Console.WriteLine(message);
+            var batchCount = _random.Next(5, 11);
+            if (task.InputData.ContainsKey("batchCount"))
+            {
+                batchCount = (int)task.InputData["batchCount"];
+            }
+            batchCount = Math.Min(100, batchCount); // Limit to 100 in playground
+            var depositDetails = Enumerable.Range(0, batchCount)
+                .Select(i => new DepositDetail
+                {
+                    accountId = $"acc-id-{i}",
+                    amount = i * 1500L
+                }).ToList();
             var result = task.Completed();
-            result.OutputData = new Dictionary<string, object>() { { "output_key", message } };
+            Console.WriteLine($"Returning {depositDetails.Count} transactions");
+            result.OutputData = new Dictionary<string, object> { { "depositDetails", depositDetails } };
             return result;
         }
-    }
 
-    public class GetUserInfo : AbstractWorker
-    {
-        public GetUserInfo() : base("get_user_info") { }
-
-        override
-        public TaskResult Execute(Task task)
-        {
-            return task.Completed(CreateOutputDataFromTask(task));
-        }
-
-        private Dictionary<string, object> CreateOutputDataFromTask(Task task)
-        {
-            var userId = (string)task.InputData["userId"];
-            var userInfo = new UserInfo("User X", userId);
-            userInfo.Email = $"{userId}@example.com";
-            userInfo.PhoneNumber = "555-555-5555";
-            return GetDictionaryFromObject(userInfo);
-        }
+        // docs-marker-end-2        
     }
 }
