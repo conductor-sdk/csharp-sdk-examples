@@ -37,7 +37,6 @@ namespace Examples.Worker
         // docs-marker-end-1
 
         // docs-marker-start-2
-        
         [WorkerTask(taskType: "retrieve-deposit-batch", batchSize: 5, domain: null, pollIntervalMs: 200, workerId: "workerId")]
         public TaskResult RetrieveDepositBatch(Task task)
         {
