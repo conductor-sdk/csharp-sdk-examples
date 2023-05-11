@@ -2,21 +2,18 @@ name: Continuous Integration
 
 on: pull_request
 
-env:
-  IMAGE_NAME: csharp-sdk-examples
-
 jobs:
-  build-and-run:
+  lint:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Build image
-        run: docker build . -t $IMAGE_NAME
-      - name: Set up ENVs
+      - name: Build
         run: >
-          echo "KEY=${{ secrets.SDK_KEY }}" >> .env
-          echo "SECRET=${{ secrets.SDK_SECRET }}" >> .env
-          echo "CONDUCTOR_SERVER_URL=${{ secrets.CONDUCTOR_SERVER_URL }}" >> .env
+          docker build -t csharp-sdk-example --progress=plain .
+          --build-arg KEY=${{ secrets.SDK_KEY }}
+          --build-arg SECRET=${{ secrets.SDK_SECRET }}
+          --build-arg CONDUCTOR_SERVER_URL=${{ secrets.CONDUCTOR_SERVER_URL }}
       - name: Run
-        run: docker run --env-file .env $IMAGE_NAME
+        run: docker run csharp-sdk-example
+
