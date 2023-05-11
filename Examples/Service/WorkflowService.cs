@@ -19,6 +19,7 @@ namespace Examples.Service
 
         public string StartDepositWorkflow(DepositDetail depositDetail)
         {
+            // docs-marker-start-1
             var request = new StartWorkflowRequest
             {
                 Name = WORKFLOW_NAME,
@@ -28,6 +29,8 @@ namespace Examples.Service
             var workflowId = _workflowClient.StartWorkflow(request);
             Console.WriteLine($"Started deposit workflow id: {workflowId}");
             return workflowId;
+
+            // docs-marker-end-1
         }
     }
 }
