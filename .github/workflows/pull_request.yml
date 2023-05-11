@@ -3,7 +3,7 @@ name: Continuous Integration
 on: pull_request
 
 jobs:
-  lint:
+  test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -16,4 +16,3 @@ jobs:
           --build-arg CONDUCTOR_SERVER_URL=${{ secrets.CONDUCTOR_SERVER_URL }}
       - name: Run
         run: docker run csharp-sdk-example
-
