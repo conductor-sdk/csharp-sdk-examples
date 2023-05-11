@@ -1,7 +1,6 @@
 name: Continuous Integration
 
-on: 
-  workflow_dispatch:
+on: pull_request
 
 env:
   IMAGE_NAME: csharp-sdk-examples
