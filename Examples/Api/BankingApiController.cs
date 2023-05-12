@@ -36,7 +36,6 @@ namespace Examples.Api
             var response = new Dictionary<string, object> { { "workflowId", workflowId } };
             return Ok(response);
         }
-
         // docs-marker-end-1
     }
 }

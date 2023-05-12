@@ -29,7 +29,6 @@ namespace Examples.Service
             var workflowId = _workflowClient.StartWorkflow(request);
             Console.WriteLine($"Started deposit workflow id: {workflowId}");
             return workflowId;
-
             // docs-marker-end-1
         }
     }

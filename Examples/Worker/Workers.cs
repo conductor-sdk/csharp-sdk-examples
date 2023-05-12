@@ -22,7 +22,6 @@ namespace Examples.Worker
         }
 
         // docs-marker-start-1
-
         // Note: Using this setting, up to 5 tasks will run in parallel, with tasks being polled every 200ms
         [WorkerTask(taskType: "fraud-check", batchSize: 5, domain: null, pollIntervalMs: 200, workerId: "workerId")]
         public TaskResult FraudWorker(Task task)
@@ -33,7 +32,6 @@ namespace Examples.Worker
             result.OutputData = Examples.Util.TypeUtil.GetDictionaryFromObject(fraudCheckResult);
             return result;
         }
-
         // docs-marker-end-1
 
         // docs-marker-start-2
@@ -57,7 +55,6 @@ namespace Examples.Worker
             result.OutputData = new Dictionary<string, object> { { "depositDetails", depositDetails } };
             return result;
         }
-
         // docs-marker-end-2        
     }
 }
